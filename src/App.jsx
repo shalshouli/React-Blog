@@ -1,4 +1,4 @@
-import { Button, Tooltip, Input } from "antd";
+import { Button, Tooltip, Input, Card } from "antd";
 import logo from "/cat3.jpg";
 import "./App.css";
 import { EditOutlined } from "@ant-design/icons";
@@ -40,10 +40,18 @@ function App() {
             article.content.toLowerCase().includes(searchTerm.toLowerCase())
         )
         .map((article) => (
-          <div key={article.id}>
-            <h2>{article.title}</h2>
-            <p>{article.content}</p>
-          </div>
+          <Card
+            key={article.id}
+            title={article.title || "Titre manquant"}
+            style={{ marginBottom: 16, width: "100%", maxWidth: 600 }}
+          >
+            <p>{article.content || "Contenu manquant"}</p>
+            <p style={{ textAlign: "right", fontSize: "0.8rem", color: "#999" }}>
+              {article.createdAt?.seconds
+                ? new Date(article.createdAt.seconds * 1000).toLocaleString()
+                : "Date inconnue"}
+            </p>
+          </Card>
         ))}
 
       <Tooltip title="Cliquez ici pour ajouter un article">

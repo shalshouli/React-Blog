@@ -34,14 +34,27 @@ export const getArticles = (callback) => {
   });
 };
 
-export const addArticle = (article) => {
-  addDoc(collection(db, "articles"), article);
+export const addArticle = async (article, callback) => {
+  try {
+    await addDoc(collection(db, "articles"), article);
+    if (callback) callback();
+  } catch (error) {
+    console.error("Erreur d'ajout :", error);
+  }
 };
 
-export const updateArticle = (article) => {
-  updateDoc(doc(db, "articles", article.id), article);
+export const updateArticle = async (article) => {
+  try {
+    await updateDoc(doc(db, "articles", article.id), article);
+  } catch (error) {
+    console.error("Erreur de mise à jour :", error);
+  }
 };
 
-export const deleteArticle = (article) => {
-  deleteDoc(doc(db, "articles", article.id));
+export const deleteArticle = async (article) => {
+  try {
+    await deleteDoc(doc(db, "articles", article.id));
+  } catch (error) {
+    console.error("Erreur de suppression :", error);
+  }
 };
