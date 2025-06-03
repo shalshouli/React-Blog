@@ -1,5 +1,5 @@
 import { Button, Tooltip, Input, Card } from "antd";
-import logo from "/cat3.jpg";
+// import logo from "/cat3.jpg";
 import "./App.css";
 import { EditOutlined } from "@ant-design/icons";
 import ArticleModal from "./components/ArticleModal";
@@ -28,12 +28,12 @@ function App() {
 
   return (
     <>
-      <div>
+      {/* <div>
         <a href="https://vite.dev/" target="_blank" rel="noreferrer">
           <img src={logo} className="logo" alt="logo" />
         </a>
-      </div>
-      <h1>TP React</h1>
+      </div> */}
+      <h1>Rendu React</h1>
 
       <Input
         placeholder="Rechercher un article..."
@@ -76,6 +76,7 @@ function App() {
           <Button
             type="primary"
             icon={<EditOutlined />}
+            className="my-button"
             onClick={() => setIsModalOpen(true)}
           >
             Rédiger un article
