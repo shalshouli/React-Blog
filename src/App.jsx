@@ -4,12 +4,13 @@ import "./App.css";
 import { EditOutlined } from "@ant-design/icons";
 import ArticleModal from "./components/ArticleModal";
 import { useEffect, useState } from "react";
-import { getArticles } from "./Fire";
+import { getArticles, deleteArticle } from "./Fire";
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [articles, setArticles] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedArticle, setSelectedArticle] = useState(null);
 
   useEffect(() => {
     getArticles((posts) => {
@@ -17,10 +18,18 @@ function App() {
     });
   }, []);
 
+  const handleDeleteSelected = () => {
+    if (!selectedArticle) return;
+    if (confirm(`Supprimer l'article "${selectedArticle.title}" ?`)) {
+      deleteArticle(selectedArticle);
+      setSelectedArticle(null);
+    }
+  };
+
   return (
     <>
       <div>
-        <a href="https://vite.dev/" target="_blank">
+        <a href="https://vite.dev/" target="_blank" rel="noreferrer">
           <img src={logo} className="logo" alt="logo" />
         </a>
       </div>
@@ -43,7 +52,15 @@ function App() {
           <Card
             key={article.id}
             title={article.title || "Titre manquant"}
-            style={{ marginBottom: 16, width: "100%", maxWidth: 600 }}
+            bodyStyle={{ textAlign: "left" }}
+            style={{
+              marginBottom: 16,
+              width: "100%",
+              maxWidth: 600,
+              border: selectedArticle?.id === article.id ? "2px solid #1890ff" : undefined,
+              cursor: "pointer"
+            }}
+            onClick={() => setSelectedArticle(article)}
           >
             <p>{article.content || "Contenu manquant"}</p>
             <p style={{ textAlign: "right", fontSize: "0.8rem", color: "#999" }}>
@@ -54,15 +71,25 @@ function App() {
           </Card>
         ))}
 
-      <Tooltip title="Cliquez ici pour ajouter un article">
-        <Button
-          type="primary"
-          icon={<EditOutlined />}
-          onClick={() => setIsModalOpen(true)}
-        >
-          Rédiger un article
-        </Button>
-      </Tooltip>
+      <div style={{ display: "flex", gap: "10px", justifyContent: "center", marginTop: "20px" }}>
+        <Tooltip title="Ajouter un nouvel article">
+          <Button
+            type="primary"
+            icon={<EditOutlined />}
+            onClick={() => setIsModalOpen(true)}
+          >
+            Rédiger un article
+          </Button>
+        </Tooltip>
+
+        {selectedArticle && (
+          <Tooltip title={`Supprimer "${selectedArticle.title}"`}>
+            <Button danger onClick={handleDeleteSelected}>
+              Supprimer cet article
+            </Button>
+          </Tooltip>
+        )}
+      </div>
 
       {isModalOpen && (
         <ArticleModal
