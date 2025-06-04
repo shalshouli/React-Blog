@@ -57,7 +57,7 @@ function App() {
               marginBottom: 16,
               width: "100%",
               maxWidth: 600,
-              border: selectedArticle?.id === article.id ? "2px solid #1890ff" : undefined,
+              border: selectedArticle?.id === article.id ? "2px solid rgb(255, 0, 0)" : undefined,
               cursor: "pointer"
             }}
             onClick={() => setSelectedArticle(article)}
